@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'] })
 export default function Home() {
   return (
     <>
-      <h1 className='font-bold text-5xl text-center my-5'>Tailwind connected</h1>
+      <h1 className='font-bold text-3xl text-center my-5'>Home Page</h1>
     </>
   )
 }
