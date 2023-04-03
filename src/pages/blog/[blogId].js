@@ -6,7 +6,7 @@ import React from 'react';
 const arr = [1,2,3,4,5,6];
 
 const SinglePost = () => {
-    const { query: { postId } } = useRouter();
+    const { query: { blogID } } = useRouter();
     return (
         <>
             <Head>
@@ -33,7 +33,7 @@ const SinglePost = () => {
                                 <div key={i} className="border-2 h-[7.2rem] rounded-md snap-normal snap-start p-1 flex flex-col gap-0.5">
                                     <div className='inline-flex gap-2 items-center font-bold text-sm'>
                                         <img
-                                            className='w-10 h-10 bdr rounded-full'
+                                            className='w-10 h-10 rounded-full'
                                             src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png" alt="" />
                                         <h4>Mr. User</h4>
                                     </div>

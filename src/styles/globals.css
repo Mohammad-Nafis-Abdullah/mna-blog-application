@@ -2,8 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base{
+    h1{
+        @apply text-5xl;
+    }
+    h2{
+        @apply text-3xl;
+    }
+    ol{
+        @apply list-decimal pl-8;
+    }
+    ul{
+        @apply list-disc pl-8;
+    }
+}
 @layer components{
     .bdr{
         @apply border-4 border-black;
     }
+}
+
+.blog-card:hover h3, .blog-card:hover p{
+    @apply text-gray-400;
 }
