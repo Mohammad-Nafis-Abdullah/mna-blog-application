@@ -1,10 +1,15 @@
+import Head from 'next/head';
 import React from 'react';
 
 const CreatePost = () => {
     return (
-        <div>
-            <h2 className='font-bold text-center text-3xl my-5'>Create Post page</h2>
-        </div>
+        <>
+            <Head>
+                <title>Create Post - Tech Blogs</title>
+            </Head>
+            
+            <h2 className='font-bold text-center text-xl my-5'>Create Post page</h2>
+        </>
     );
 };
 
