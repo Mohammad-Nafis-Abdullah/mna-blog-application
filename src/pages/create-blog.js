@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/exhaustive-deps */
 import Head from 'next/head';
 import React, { useState } from 'react';
@@ -8,8 +9,9 @@ import { useForm } from 'react-hook-form';
 
 const CreatePost = () => {
     const [value, setValue] = useState('');
+    const [img, setImg] = useState(undefined);
     const [err, setErr] = useState(false);
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, clearErrors, formState: { errors } } = useForm();
 
     const modules = {
         toolbar: [
@@ -27,8 +29,8 @@ const CreatePost = () => {
         'link'
     ];
 
-    const errGenerator = (text='')=> {
-        if (!text) {
+    const errGenerator = (length)=> {
+        if (length===1) {
             setErr(true);
             return;
         }
@@ -38,12 +40,19 @@ const CreatePost = () => {
 
     // form submitting function
     const submitting = (data)=> {
-        if (!value) {
+        if (!value || err || !img) {
             setErr(true);
             return;
         }
-        const blog = {...data,detail:value};
+        const blog = {...data,detail:value,img:img};
         console.log(blog);
+    }
+
+    const getPreviewUrl = (file)=> {
+        if (!file) {
+            return '';
+        }
+        return URL.createObjectURL(file);
     }
 
     return (
@@ -59,11 +68,32 @@ const CreatePost = () => {
                 <label className='space-y-1'>
                     <span className='text-lg font-bold tracking-widest'>Blog Title : *</span>
                     <input
-                        {...register('title', { required: "Title is required", pattern: /[A-Za-z]+/i })}
+                        {...register('title', { required: "Title is required", pattern:{
+                            value:/[A-Za-z]+/i,
+                            message:'Not a valid title'
+                        } })}
                         className='border-2 p-2 text-lg w-full min-w-0 rounded text-gray-600 font-bold' type="text"/>
                     {
                         errors.title && 
                         <p className='text-red-600 text-sm font-bold bg-red-200 p-2 rounded tracking-wider'>{errors.title?.message}</p>
+                    }
+                </label>
+
+                <label className='space-y-1'>
+                    <span className='text-lg font-bold tracking-widest'>Blog Image : *</span>
+                    <input
+                        {...register('img',{ required: "Image is required"})}
+                        accept=".jpg, .jpeg, .png"
+                        type="file"
+                        onChange={(e)=> setImg(e.target.files?.[0])}
+                        className='border-2 p-2 text-lg w-full min-w-0 rounded text-gray-600 font-bold' />
+                    {
+                        errors.img && 
+                        <p className='text-red-600 text-sm font-bold bg-red-200 p-2 rounded tracking-wider'>{errors.img?.message}</p>
+                    }
+                    {
+                        img &&
+                        <img src={getPreviewUrl(img)} alt="" className='mx-auto h-40 w-full object-scale-down' />
                     }
                 </label>
 
@@ -75,7 +105,7 @@ const CreatePost = () => {
                     }
                     <ReactQuill value={value} onChange={(content,delta,source,editor) => {
                         setValue(content);
-                        errGenerator(editor.getText());
+                        errGenerator(editor.getLength());
                     }} modules={modules} formats={formats} style={{
                         minHeight: '10rem',
                         height: '10rem'
