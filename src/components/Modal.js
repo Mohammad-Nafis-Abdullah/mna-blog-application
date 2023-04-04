@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ImCross } from 'react-icons/im';
 
 
@@ -14,11 +14,10 @@ let checkStatus, setCheckStatus;
 const Modal = () => {
     [child, setModalChild] = useState(<div />);
     [checkStatus, setCheckStatus] = useState(false)
-
-    const topDiv = document.getElementById('top');
+    const topRef = useRef();
 
     useEffect(() => {
-        topDiv?.scrollIntoView();
+        topRef?.current?.scrollIntoView();
     }, [checkStatus]);
 
     return (
@@ -26,7 +25,7 @@ const Modal = () => {
             <button onClick={closeModal} className="bg-white flex justify-center items-center text-3xl font-bold text-red-500 h-8 w-8 rounded fixed right-[5%] top-5 cursor-pointer select-none p-1.5 z-[99]"><ImCross /></button>
 
             <div className='w-full overflow-auto h-screen'>
-                <div id='top' className='h-0 mb-16' />
+                <div ref={topRef} className='h-0 mb-16' />
                 <div className='h-[calc(100%-4rem)] overflow-y-auto'>
                     {child}
                 </div>
