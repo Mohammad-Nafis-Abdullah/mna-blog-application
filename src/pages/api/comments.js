@@ -69,7 +69,7 @@ export default async function handler(req,res) {
     
     
             case 'POST':
-                const result = await _postSingleComment(blogId,JSON.parse(commentsBody));
+                const result = await _postSingleComment(blogId,commentsBody);
                 res.send(result);
                 return;
     

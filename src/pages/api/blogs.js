@@ -145,13 +145,13 @@ export default async function handler(req,res) {
 
 
             case 'POST':
-                const postResult = await _addData(JSON.parse(dataBody));
+                const postResult = await _addData(dataBody);
                 res.send(postResult);
                 return;
 
 
             case 'PUT':
-                const putResult = await _updateSingleData(id,JSON.parse(dataBody));
+                const putResult = await _updateSingleData(id,dataBody);
                 res.send(putResult);
                 return;
 

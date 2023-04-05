@@ -1,26 +1,25 @@
 /* eslint-disable @next/next/no-img-element */
+import axios from 'axios';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 const arr = [1,2,3,4,5,6];
 
-const SinglePost = () => {
-    const { query: { blogID } } = useRouter();
+const SinglePost = ({blog}) => {
     return (
         <>
             <Head>
-                <title>Post - Tech Blogs</title>
+                <title>{blog.title} - Tech Blogs</title>
             </Head>
             <section className='flex flex-wrap gap-5 justify-center items-start max-w-6xl mx-auto px-3 pt-5 sm:pt-10 pb-5'>
                 
                 <article className='basis-96 grow-[2] space-y-3'> {/* blog details element */}
                     <img
                         className='max-w-sm w-full mx-auto'
-                        src="https://c4.wallpaperflare.com/wallpaper/111/745/193/reactjs-javascript-programming-programming-language-hd-wallpaper-preview.jpg"
+                        src={blog.img}
                         alt={'Blogs'} />
-                    <h3 className='font-bold text-2xl tracking-wider'>Blog Title</h3>
-                    <p className='text-gray-600 font-semibold overflow-y-auto h-72'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus officiis, enim dolores id esse suscipit sunt accusamus voluptatum, molestiae non quibusdam, odio repudiandae possimus minus laudantium recusandae placeat nihil. Nulla, numquam quidem. Maiores, necessitatibus quisquam quaerat sunt recusandae earum tempora ullam quam amet est deleniti, odit quibusdam at cupiditate perspiciatis! Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloribus maxime provident asperiores recusandae! In aut suscipit pariatur maxime, ipsa, ratione beatae hic odit ullam numquam veniam at ipsam eius recusandae a asperiores vitae repudiandae. Maxime pariatur, perferendis, doloremque repellendus similique, quaerat laborum expedita ut voluptatum ipsum iste harum labore placeat odit quidem? At iste aliquid temporibus doloremque tenetur perferendis, quod rem eveniet qui laudantium eos et? Impedit velit cupiditate ipsa quis beatae accusamus aspernatur corporis saepe! Aspernatur optio deleniti, quod, laboriosam natus corporis quaerat totam at quasi architecto atque placeat temporibus! Corporis quod esse consequuntur minima autem ut non perferendis.</p>
+                    <h3 className='font-bold text-2xl tracking-wider'>{blog.title}</h3>
+                    <p className='text-gray-600 font-semibold overflow-y-auto h-72'>{blog.details}</p>
                 </article>
                 
                 <div className='basis-80 grow'> {/* comments element */}
@@ -57,3 +56,18 @@ const SinglePost = () => {
 };
 
 export default SinglePost;
+
+
+
+export async function getServerSideProps(context) {
+    const {blogId} = context.query;
+    console.log(blogId);
+    const blog = await axios.get(`http://localhost:3000/api/blogs?id=${blogId}`);
+
+    return {
+        props:{
+            blog:blog.data,
+            comments:[]
+        }
+    }
+}
