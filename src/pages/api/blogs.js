@@ -26,7 +26,7 @@ const _getData = (title='')=> {
             const data_values = [...Object.values(data_parsed)];
             if (title) {
                 const matched = data_values.filter((data)=> {
-                    return data.title.includes(title);
+                    return data.title.toLowerCase().includes(title);
                 })
                 resolve(matched);
             } else {
