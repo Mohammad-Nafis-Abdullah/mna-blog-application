@@ -20,7 +20,8 @@ const _getComments = (filename='')=> {
 const _postSingleComment = (filename='',comment={})=> {
     const newComment = {
         ...comment,
-        _id:`comment_${Date.now()}`
+        _id:`comment_${Date.now()}`,
+        submitTime: Date().toLocaleString()
     }
     
     return new Promise(async(resolve, reject) => {
@@ -28,7 +29,7 @@ const _postSingleComment = (filename='',comment={})=> {
             const comments_json = await fs.readFile(`${path}/${filename}.json`,{encoding:'utf-8'});
             const comments_parsed = JSON.parse(comments_json);
             
-            if (!newComment?.userName) {
+            if (!newComment?.userEmail) {
                 resolve({
                     inserted:false,
                     message: 'Missing mandatory comment property'
