@@ -70,7 +70,7 @@ export default async function handler(req, res) {
 
             case 'POST':
                 const postResult = await _addSingleUser(userBody);
-                res.setHeader('Set-Cookie', `_id=${userBody._id}`);
+                res.setHeader('Set-Cookie', `_id=${userBody._id}; Path=/;`);
                 res.send(postResult);
                 return;
 
