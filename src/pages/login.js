@@ -3,13 +3,14 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useCreateUserWithEmailAndPassword, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useAuthState, useCreateUserWithEmailAndPassword, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import Loading from '@/components/Loading';
 
 
 const LoginForm = () => {
     const router = useRouter();
+    const [user] = useAuthState(auth);
     // console.log(router.asPath);
     const [isLogin, setLoginState] = useState(true);
     const [
@@ -36,8 +37,8 @@ const LoginForm = () => {
     }, [isLogin]);
 
     useEffect(()=> {
-        if (signUser || logUser) {
-            router.push(router.asPath);
+        if (signUser || logUser || user) {
+            router.push(router.asPath,'');
         }
     },[signUser,logUser])
 

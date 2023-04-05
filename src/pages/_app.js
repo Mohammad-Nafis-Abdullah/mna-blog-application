@@ -12,22 +12,22 @@ import auth from '../../firebase.init';
 const nunito = Nunito_Sans({ subsets: ['latin'], weight: '400' });
 
 export default function App({ Component, pageProps }) {
-  const [user] = useAuthState(auth);
+  const [user, loading, error] = useAuthState(auth);
   const router = useRouter();
-  const [signOut, loading, error] = useSignOut(auth);
+  const [signOut, outLoading, outError] = useSignOut(auth);
 
   useEffect(()=> {
-      if (!user) {
+      if (!user && !loading) {
         router.push('/');
       }
-  },[user]);
+  },[user,loading]);
 
 
-  if(loading){
+  if(loading||outLoading){
     return <Loading/>
   }
 
-  if (error) {
+  if (error||outError) {
     alert(error.message);
   }
 
