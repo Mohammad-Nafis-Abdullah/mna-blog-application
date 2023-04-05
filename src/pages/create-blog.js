@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 const ReactQuill = dynamic(import('react-quill'), { ssr: false });
 import 'react-quill/dist/quill.snow.css';
 import { useForm } from 'react-hook-form';
+import RequireAuth from '@/components/RequireAuth';
 
 const CreatePost = () => {
     const [value, setValue] = useState('');
@@ -56,7 +57,7 @@ const CreatePost = () => {
     }
 
     return (
-        <>
+        <RequireAuth>
             <Head>
                 <title>Create Blog - Tech Blogs</title>
             </Head>
@@ -117,7 +118,7 @@ const CreatePost = () => {
 
             
             {/* <div dangerouslySetInnerHTML={{__html: value}}></div> */}
-        </>
+        </RequireAuth>
     );
 };
 
