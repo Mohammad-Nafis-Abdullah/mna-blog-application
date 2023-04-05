@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useAuthState, useCreateUserWithEmailAndPassword, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import Loading from '@/components/Loading';
+import axios from 'axios';
 
 
 const LoginForm = () => {
@@ -51,7 +52,9 @@ const LoginForm = () => {
         const {uid,email} = result?.user;
         // console.log(uid);
         if (uid) {
-            
+            const result = await axios.post(`http://localhost:3000/api/users`,{_id:uid,email});
+            console.log(result);
+            return;
         } else {
             return;
         }
