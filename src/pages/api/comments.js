@@ -58,24 +58,23 @@ const _postSingleComment = (filename='',comment={})=> {
 export default async function handler(req,res) {
     const {blogId} = req.query;
     const commentsBody = req.body;
-    // console.log(commentsBody);
     
     try {
         switch (req.method) {
-            case 'GET':
+            case 'GET': // http://localhost:3000/api/comments?blogId=' '
                 const comments = await _getComments(blogId);
                 res.send(comments);
                 return;
     
     
-            case 'POST':
+            case 'POST': // http://localhost:3000/api/comments?blogId=' '
                 const result = await _postSingleComment(blogId,commentsBody);
                 res.send(result);
                 return;
     
     
             default:
-                res.send({route:'comments'});
+                res.send({ message: 'Not a declared method' });
                 return;
         }
     } catch (err) {

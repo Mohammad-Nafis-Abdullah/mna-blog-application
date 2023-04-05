@@ -131,7 +131,7 @@ export default async function handler(req,res) {
 
     try {
         switch (req.method) {
-            case 'GET':
+            case 'GET': // http://localhost:3000/api/blogs?id=' '&title=' '
                 if (id) {
                     // get single blog by id from query parameter
                     const blog = await _singleData(id);
@@ -144,25 +144,25 @@ export default async function handler(req,res) {
                 return;
 
 
-            case 'POST':
+            case 'POST': // http://localhost:3000/api/blogs
                 const postResult = await _addData(dataBody);
                 res.send(postResult);
                 return;
 
 
-            case 'PUT':
+            case 'PUT': // http://localhost:3000/api/blogs?id=' '
                 const putResult = await _updateSingleData(id,dataBody);
                 res.send(putResult);
                 return;
 
 
-            case 'DELETE':
+            case 'DELETE': // http://localhost:3000/api/blogs?id=' '
                 const deleteResult = await _deleteSingleData(id);
                 res.send(deleteResult);
                 return;
     
             default:
-                res.send({route:'blog'});
+                res.send({ message: 'Not a declared method' });
                 return;
         }
     } catch (err) {

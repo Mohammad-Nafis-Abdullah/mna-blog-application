@@ -57,18 +57,17 @@ const _addSingleUser = (user = {}) => {
 
 export default async function handler(req, res) {
     const userBody = req.body;
-    // console.log(id);
 
     try {
         switch (req.method) {
-            case 'GET':
+            case 'GET': // http://localhost:3000/api/users
                 const {_id} = req.cookies;
                 const resultGet = await _getSingleUser(_id);
                 res.send(resultGet);
                 return;
 
 
-            case 'POST':
+            case 'POST': // http://localhost:3000/api/users
                 const postResult = await _addSingleUser(userBody);
                 res.setHeader('Set-Cookie', `_id=${userBody._id}; Path=/;`);
                 res.send(postResult);
@@ -76,7 +75,7 @@ export default async function handler(req, res) {
 
 
             default:
-                res.send({ route: 'users' });
+                res.send({ message: 'Not a declared method' });
                 return;
         }
     } catch (err) {
