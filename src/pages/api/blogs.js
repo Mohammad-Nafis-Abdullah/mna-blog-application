@@ -51,6 +51,7 @@ const _addData = (data={})=> {
             prevData_parsed[newBlog._id] = newBlog;
             const newData_json = JSON.stringify(prevData_parsed);
             await fs.writeFile(path,newData_json,{encoding:'utf-8'});
+            await fs.writeFile(`src/data/${newBlog._id}.json`,'{}',{encoding:'utf-8'});
             resolve({
                 inserted:true,
                 insertId:newBlog._id,
@@ -88,7 +89,7 @@ const _updateSingleData = (id='',data={})=> {
     })
 }
 
-const _deleteSingleData = (id)=> {
+const _deleteSingleData = (id='')=> {
     
     return new Promise(async(resolve, reject) => {
         try {
