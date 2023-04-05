@@ -107,10 +107,17 @@ const _deleteSingleData = (id='')=> {
             delete data_parsed[id];
             const newData_json = JSON.stringify(data_parsed);
             await fs.writeFile(path,newData_json,{encoding:'utf-8'});
+            await fs.unlink(`src/data/${id}.json`)
             resolve({
                 delete:true,
-            })
+            });
         } catch (err) {
+            if (err.code==="ENOENT") {
+                resolve({
+                    delete:true,
+                })
+                return;
+            };
             reject(err);
         }
     })
