@@ -7,15 +7,14 @@ import auth from '../../firebase.init';
 
 const RequireAuth = ({children}) => {
     const router = useRouter();
-    const {pathname} = router;
     const [user, loading, error] = useAuthState(auth);
 
     useEffect(()=> {
         if (!user && !loading) {
-            router.push('/login',pathname,{shallow:true});
+            router.push('/login');
             return;
         }
-    },[router,user,loading])
+    },[user,loading])
 
     if(user) {
         return children;

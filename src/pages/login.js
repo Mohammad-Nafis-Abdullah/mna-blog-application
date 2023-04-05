@@ -37,36 +37,42 @@ const LoginForm = () => {
         reset();
     }, [isLogin]);
 
-    useEffect(()=> {
+    useEffect(() => {
         if (signUser || logUser || user) {
-            router.push(router.asPath,'');
+            router.push('/');
         }
-    },[signUser,logUser])
+    }, [signUser, logUser])
 
     if (signLoading || logLoading) {
-        return <Loading/>
+        return <Loading />
     }
 
     const login = async (data) => {
-        const result = await signInWithEmailAndPassword(data.email,data.pass);
-        const {uid,email} = result?.user;
-        // console.log(uid);
+        const result = await signInWithEmailAndPassword(data.email, data.pass);
+        const { uid, email } = result?.user;
         if (uid) {
-            const result = await axios.post(`http://localhost:3000/api/users`,{_id:uid,email});
-            console.log(result);
+            clearErrors();
+            reset();
+            await axios.post(`http://localhost:3000/api/users`, { _id: uid, email });
             return;
         } else {
+            clearErrors();
+            reset();
             return;
         }
     };
 
     const signUp = async (data) => {
-        const result = await createUserWithEmailAndPassword(data.email,data.pass);
-        const {uid,email} = result?.user;
-        // console.log(uid);
+        const result = await createUserWithEmailAndPassword(data.email, data.pass);
+        const { uid, email } = result?.user;
         if (uid) {
-            
+            await axios.post(`http://localhost:3000/api/users`, { _id: uid, email });
+            clearErrors();
+            reset();
+            return;
         } else {
+            clearErrors();
+            reset();
             return;
         }
     };
