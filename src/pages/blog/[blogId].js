@@ -115,7 +115,7 @@ export async function getServerSideProps(context) {
     const { blogId } = context.query;
     const blog = await axios.get(`http://localhost:3000/api/blogs?id=${blogId}`);
     const comments = await axios.get(`http://localhost:3000/api/comments?blogId=${blogId}`)
-    console.log('single blog loaded',comments.data);
+    // console.log('single blog loaded',comments.data);
     return {
         props: {
             blog: blog.data,
