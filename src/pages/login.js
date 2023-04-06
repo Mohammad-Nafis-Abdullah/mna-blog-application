@@ -50,7 +50,7 @@ const LoginForm = () => {
     const login = async (data) => {
         const result = await signInWithEmailAndPassword(data.email, data.pass);
         const { uid, email } = result?.user;
-        if (uid) {
+        if (result?.user?.uid) {
             clearErrors();
             reset();
             await axios.post(`http://localhost:3000/api/users`, { _id: uid, email });
@@ -63,9 +63,12 @@ const LoginForm = () => {
     };
 
     const signUp = async (data) => {
+        if (data.pass!==data.repeatPass) {
+            return;
+        }
         const result = await createUserWithEmailAndPassword(data.email, data.pass);
         const { uid, email } = result?.user;
-        if (uid) {
+        if (result?.user?.uid) {
             await axios.post(`http://localhost:3000/api/users`, { _id: uid, email });
             clearErrors();
             reset();

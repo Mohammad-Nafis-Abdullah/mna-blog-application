@@ -9,10 +9,12 @@ import { useRouter } from 'next/router';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import Loading from '@/components/Loading';
+import Pagination from '@/components/Pagination';
 
 
 export default function Home({blogs}) {
   const [text,setText] = useState('');
+  const [page,setPage] = useState(1);
   const [authorId,setAuthorId] = useState('')
   const router = useRouter();
   const [user,loading] = useAuthState(auth);
@@ -40,13 +42,26 @@ export default function Home({blogs}) {
     return <Loading/>;
   }
 
+  const postPerPage = 4;
+  const countPage = (count)=> {
+      return (count%postPerPage)?Math.ceil(count/postPerPage):(count/postPerPage);
+  };
+
+  const startIndex = (page)=> {
+      return (page-1)*postPerPage;
+  };
+
+  const endIndex = (page)=> {
+      return (page-1)*postPerPage+postPerPage;
+  }
+
   return (
     <>
       <Head>
         <title>Home - Tech Blogs</title>
       </Head>
 
-      <section className='flex flex-wrap gap-5 justify-center max-w-6xl mx-auto px-3 pt-5 sm:pt-10 pb-5'>
+      <section className='flex flex-wrap gap-5 justify-center max-w-6xl mx-auto px-3 pt-5 pb-5'>
 
         <div className='basis-full flex flex-col lg:flex-row lg:items-center gap-5 justify-between'>
 
@@ -78,10 +93,15 @@ export default function Home({blogs}) {
           </Link>
         </div>
         {
-          blogs?.map((blog, i) => (
+          blogs?.slice(startIndex(page),endIndex(page))?.map((blog, i) => (
             <BlogCard key={i} blog={blog} userId={user?.uid} />
           ))
         }
+        <Pagination
+        className={'basis-full flex justify-center items-center p-3'}
+        page={page}
+        setPage={setPage}
+        totalPage={countPage([...blogs].length)}/>
       </section>
     </>
   )

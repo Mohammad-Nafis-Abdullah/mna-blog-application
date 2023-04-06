@@ -17,7 +17,7 @@ const BlogCard = ({ blog, userId }) => {
     }, [userId]);
 
     return (
-        <section className='basis-80 grow shrink h-48 border-2 rounded transition-transform cursor-pointer bg-center bg-cover bg-no-repeat hover:ring-2 relative' style={{
+        <section className='basis-96 grow shrink h-48 border-2 rounded transition-transform cursor-pointer bg-center bg-cover bg-no-repeat hover:ring-2 relative' style={{
             backgroundImage: `url(${imgUrl(blog.img)})`
         }}>
             {
