@@ -1,38 +1,45 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# Advanced Blog Application
 
-First, run the development server:
+An advance blog app where an user can read blogs and post new blogs and delete posted blogs.
+
+## Run Locally
+
+Clone the project
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+  git clone https://github.com/Mohammad-Nafis-Abdullah/imt-job-task.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Go to the project directory
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+```bash
+  cd imt-job-task
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Install dependencies
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```bash
+  yarn
+  npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Start the application
 
-## Learn More
+```bash
+  yarn dev
+  npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+After starting the application, the result is will be shown at [http://localhost:3000](http://localhost:3000).
+## Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- A list of Blogs is displayed in the Index page as a **Blog Card**.
+- At the bottom of all Card displaying section a **Pagination** component is attached to control a certain amount of showing Blogs at a time.
+- Search blog by Blog title in the **Search Bar**.
+- Find the blogs that are posted by the logged in user by checking in the **My Blogs** checkbox. 
+- Create new Blogs by logged in users to click **Create a New Blog**.
+- Blogs can be *updated* and *deleted* by the user who post it to click the **Edit** button on Blog card in home page.
+- Reader can read a blog in details by clicking on the blog card in index page that navigate to a individual **Blog details** page.
+- In **Blog Details** page a reader can comment on the Blog after account login.
+- If a reader comment second time in a blog, then the previous comment will be replaced by the new comment.
