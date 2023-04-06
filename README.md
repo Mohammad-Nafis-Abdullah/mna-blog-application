@@ -9,7 +9,7 @@ An advance blog app where an user can read blogs and post new blogs and delete p
 
 **Email :** admin@admin.com
 
-**Password :** admin@admin.com,
+**Password :** admin@admin.com
 
 ---
 
