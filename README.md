@@ -1,7 +1,9 @@
-
 # Advanced Blog Application
 
+
 An advance blog app where an user can read blogs and post new blogs and delete posted blogs.
+
+---
 
 ## Admin Account
 
@@ -9,6 +11,7 @@ An advance blog app where an user can read blogs and post new blogs and delete p
 
 **Password :** admin@admin.com,
 
+---
 
 ## Run Locally
 
@@ -39,6 +42,9 @@ Start the application
 ```
 
 After starting the application, the result is will be shown at [http://localhost:3000](http://localhost:3000).
+
+---
+
 ## Features
 
 - A list of Blogs is displayed in the Index page as a **Blog Card**.
