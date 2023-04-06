@@ -26,7 +26,7 @@ const EditBlog = () => {
     const router = useRouter();
     const { id } = router.query;
     const [blog, setBlog] = useState({});
-    const [refetcher,setRefetcher] = useState(false);
+    const [refetcher, setRefetcher] = useState(false);
     // console.log(id);
     // console.log(blog);
 
@@ -37,8 +37,7 @@ const EditBlog = () => {
             setValue(data.details);
             // console.log(data);
         })
-        // console.log('inside useEffect');
-    }, [id,refetcher]);
+    }, [id, refetcher]);
 
 
     const modules = {
@@ -92,7 +91,7 @@ const EditBlog = () => {
             setImg(undefined);
             // setValue('');
             clearErrors();
-            setRefetcher(prev=>!prev);
+            setRefetcher(prev => !prev);
             toast.success('Blog updated successfully', { theme: 'colored' });
         } else {
             toast.error('Blog upgrading usuccessfull', { theme: 'colored' });
@@ -106,6 +105,20 @@ const EditBlog = () => {
             return '';
         }
         return URL.createObjectURL(file);
+    }
+
+    const handleDelete = async () => {
+        const confirm = window.confirm('Are you sure to delete the blog?');
+        if (!confirm) {
+            return;
+        }
+        const { data } = await axios.delete(`http://localhost:3000/api/blogs?id=${blog._id}`);
+        if (data?.delete) {
+            toast.success('Blog deleted successfully', { theme: 'colored' });
+            router.push('/');
+        } else {
+            toast.error('Blog deletion unsuccessfull', { theme: 'colored' });
+        }
     }
 
     return (
@@ -170,7 +183,14 @@ const EditBlog = () => {
                     }} />
                 </section>
 
-                <input className='px-5 py-1 rounded-lg self-center border-2 font-bold bg-gray-900 text-white tracking-wider cursor-pointer active:scale-95 ' type="submit" value="Publish" />
+                <section className='flex justify-around'>
+                    <input className='px-5 py-1 rounded-lg self-center border-2 font-bold bg-gray-900 text-white tracking-wider cursor-pointer active:scale-95 ' type="submit" value="Publish" />
+                    <button
+                    onClick={handleDelete}
+                    className='px-5 py-1 rounded-lg self-center border-2 font-bold bg-red-500 text-white tracking-wider cursor-pointer active:scale-95'>
+                        Delete
+                    </button>
+                </section>
             </form>
 
         </RequireAuth>
