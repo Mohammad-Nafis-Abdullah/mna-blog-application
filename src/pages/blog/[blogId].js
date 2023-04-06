@@ -16,21 +16,11 @@ import { useRouter } from 'next/router';
 
 const SinglePost = ({ blog , comments }) => {
     const [user, loading] = useAuthState(auth);
-    const router = useRouter();
-    // console.log(comments);
+    const [_comments,_setComments] = useState(comments);
+
+    // console.log(_comments);
+
     const { register, handleSubmit, reset, clearErrors, formState: { errors } } = useForm();
-    // const {data:comments,loading:commentLoading,refetch} = useRefetch(`http://localhost:3000/api/comments?blogId=${blog._id}`,[]);
-    // const [comments,setComments] = useState([]);
-    const [refetcher,setRefetcher] = useState(false);
-
-    useEffect(()=> {
-        // axios.get(`http://localhost:3000/api/comments?blogId=${blog._id}`).then(({data})=> {
-        //     console.log(data);
-        //     setComments(data);
-        // })
-        router.replace(router.asPath);
-    },[])
-
 
     if (loading) {
         return <Loading />
@@ -47,13 +37,13 @@ const SinglePost = ({ blog , comments }) => {
             userId: user.uid,
             submitTime: Date().toLocaleString()
         }
-        const { data: { inserted } } = await axios.post(`http://localhost:3000/api/comments?blogId=${blog._id}`, newComment);
+        const { data: { inserted,comments } } = await axios.post(`http://localhost:3000/api/comments?blogId=${blog._id}`, newComment);
         if (inserted) {
+            _setComments(comments);
             toast.success('Comment submitted successfully', { theme: 'colored' });
         } else {
             toast.error('Comment submition unsuccessfull', { theme: 'colored' });
         }
-        setRefetcher(prev=>!prev);
         reset();
         clearErrors();
         return;
@@ -81,7 +71,7 @@ const SinglePost = ({ blog , comments }) => {
 
                     <section className='overflow-y-auto h-[23rem] space-y-2 p-1 snap-y scroll-smooth'>
                         {
-                            comments?.map((comment) => (
+                            _comments?.map((comment) => (
                                 <div key={comment.userId} className="border-2 h-[7.2rem] rounded-md snap-normal snap-start p-1 flex flex-col justify-around">
                                     <div className='inline-flex gap-2 items-center pl-3'>
                                         <img

@@ -7,6 +7,7 @@ import { useAuthState, useCreateUserWithEmailAndPassword, useSignInWithEmailAndP
 import auth from '../../firebase.init';
 import Loading from '@/components/Loading';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 const LoginForm = () => {
@@ -64,6 +65,7 @@ const LoginForm = () => {
 
     const signUp = async (data) => {
         if (data.pass!==data.repeatPass) {
+            toast.error('Password not matched',{theme:'colored'});
             return;
         }
         const result = await createUserWithEmailAndPassword(data.email, data.pass);

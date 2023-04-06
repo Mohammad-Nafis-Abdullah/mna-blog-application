@@ -37,7 +37,8 @@ const _postSingleComment = (filename='',comment={})=> {
             await fs.writeFile(`${path}/${filename}.json`,newComments_json,{encoding:'utf-8'});
             resolve({
                 inserted:true,
-                insertId:newComment._id
+                insertId:comment._id,
+                comments:Object.values(comments_parsed)
             })
         } catch (err) {
             reject(err);
