@@ -3,6 +3,13 @@
 
 An advance blog app where an user can read blogs and post new blogs and delete posted blogs.
 
+## Admin Account
+
+**Email :** admin@admin.com
+
+**Password :** admin@admin.com,
+
+
 ## Run Locally
 
 Clone the project
