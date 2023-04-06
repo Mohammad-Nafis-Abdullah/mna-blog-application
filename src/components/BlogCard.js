@@ -6,6 +6,7 @@ import { FaLongArrowAltRight, FaRegEdit } from 'react-icons/fa';
 
 const BlogCard = ({ blog, userId }) => {
     const [user,setUser] = useState({});
+    // console.log(blog._id);
 
     useEffect(() => {
         async function getUser() {
@@ -21,10 +22,10 @@ const BlogCard = ({ blog, userId }) => {
         }}>
             {
                 (userId === blog.authorId || user?.role) &&
-                <button className='absolute top-0 right-0 px-4 py-2 inline-flex rounded-bl-2xl bg-indigo-500 text-white font-bold items-center gap-1 z-[999] hover:bg-indigo-800'>
+                <Link href={`/edit-blog/${blog._id}`} className='absolute top-0 right-0 px-4 py-2 inline-flex rounded-bl-2xl bg-indigo-500 text-white font-bold items-center gap-1 z-[999] hover:bg-indigo-800'>
                     <FaRegEdit />
                     <span className='tracking-wider'>Edit</span>
-                </button>
+                </Link>
             }
             <Link href={`/blog/${blog._id}`} className='blog-card flex flex-col justify-between p-3 bg-black/80 h-full'>
                 <h3 className='font-semibold text-xl nunito text-indigo-400 tracking-wider'>{blog.title}</h3>

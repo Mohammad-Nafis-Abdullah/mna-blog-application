@@ -10,22 +10,26 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import auth from '../../../firebase.init';
+import { useRouter } from 'next/router';
 
 
 
-const SinglePost = ({ blog }) => {
+const SinglePost = ({ blog , comments }) => {
     const [user, loading] = useAuthState(auth);
+    const router = useRouter();
+    // console.log(comments);
     const { register, handleSubmit, reset, clearErrors, formState: { errors } } = useForm();
     // const {data:comments,loading:commentLoading,refetch} = useRefetch(`http://localhost:3000/api/comments?blogId=${blog._id}`,[]);
-    const [comments,setComments] = useState([]);
+    // const [comments,setComments] = useState([]);
     const [refetcher,setRefetcher] = useState(false);
 
     useEffect(()=> {
-        axios.get(`http://localhost:3000/api/comments?blogId=${blog._id}`).then(({data})=> {
-            console.log(data);
-            setComments(data);
-        })
-    },[refetcher])
+        // axios.get(`http://localhost:3000/api/comments?blogId=${blog._id}`).then(({data})=> {
+        //     console.log(data);
+        //     setComments(data);
+        // })
+        router.replace(router.asPath);
+    },[])
 
 
     if (loading) {
@@ -120,10 +124,12 @@ export default SinglePost;
 export async function getServerSideProps(context) {
     const { blogId } = context.query;
     const blog = await axios.get(`http://localhost:3000/api/blogs?id=${blogId}`);
-
+    const comments = await axios.get(`http://localhost:3000/api/comments?blogId=${blogId}`)
+    console.log('single blog loaded',comments.data);
     return {
         props: {
             blog: blog.data,
+            comments:comments.data
         }
     }
 }
