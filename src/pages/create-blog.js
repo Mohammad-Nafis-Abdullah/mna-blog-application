@@ -7,16 +7,26 @@ const ReactQuill = dynamic(import('react-quill'), { ssr: false });
 import 'react-quill/dist/quill.snow.css';
 import { useForm } from 'react-hook-form';
 import RequireAuth from '@/components/RequireAuth';
+import useFirebaseFileStorage from '@/hooks/useFirebaseFileStorage';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import auth from '../../firebase.init';
+import Loading from '@/components/Loading';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+
+const defaultImg = '1680739611531-react-blog.jpg';
 
 const CreatePost = () => {
     const [value, setValue] = useState('');
+    const [user,loading] = useAuthState(auth);
     const [img, setImg] = useState(undefined);
     const [err, setErr] = useState(false);
+    const {uploadImage} = useFirebaseFileStorage();
     const { register, handleSubmit, reset, clearErrors, formState: { errors } } = useForm();
 
     const modules = {
         toolbar: [
-            [{ 'header': [1, 2, false] }],
+            [{ 'header': [false] }],
             ['bold', 'italic', 'underline', 'strike', 'blockquote'],
             [{ 'list': 'ordered' }, { 'list': 'bullet' }],
             ['link'],
@@ -39,14 +49,40 @@ const CreatePost = () => {
         return;
     }
 
+    if (loading) {
+        return <Loading/>;
+    }
+
     // form submitting function
-    const submitting = (data)=> {
-        if (!value || err || !img) {
-            setErr(true);
+    const submitting = async (data)=> {
+        // console.log(value,err);
+        if (!value || err) {
+            // setErr(true);
             return;
         }
-        const blog = {...data,detail:value,img:img};
-        console.log(blog);
+        const newBlog = {
+            title:data.title,
+            details:value,
+            authorId: user?.uid,
+            img:defaultImg
+        };
+
+        if (img) {
+            const {name} = await uploadImage(img);
+            newBlog.img=name;
+        }
+        const {data:{inserted}} = await axios.post('http://localhost:3000/api/blogs',newBlog);
+        if (inserted) {
+            reset();
+            setErr(false);
+            setImg(undefined);
+            setValue('');
+            clearErrors();
+            toast.success('New blog inserted successfully',{theme:'colored'});
+        } else {
+            toast.error('Blog insertion unsuccessfull',{theme:'colored'});
+        }
+
     }
 
     const getPreviewUrl = (file)=> {
@@ -83,7 +119,7 @@ const CreatePost = () => {
                 <label className='space-y-1'>
                     <span className='text-lg font-bold tracking-widest'>Blog Image : *</span>
                     <input
-                        {...register('img',{ required: "Image is required"})}
+                        {...register('img',{ required:false })}
                         accept=".jpg, .jpeg, .png"
                         type="file"
                         onChange={(e)=> setImg(e.target.files?.[0])}

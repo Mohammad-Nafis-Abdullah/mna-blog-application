@@ -8,6 +8,8 @@ import { useEffect } from 'react';
 import { useAuthState, useSignOut } from 'react-firebase-hooks/auth';
 import { BiLogIn, BiLogOut } from 'react-icons/bi';
 import auth from '../../firebase.init';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 const nunito = Nunito_Sans({ subsets: ['latin'], weight: '400' });
 
@@ -56,6 +58,7 @@ export default function App({ Component, pageProps }) {
         }
       </div>
       <Component {...pageProps} />
+      <ToastContainer/>
     </main>
   )
 }

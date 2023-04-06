@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { deleteObject, ref } from "firebase/storage";
 import { useUploadFile } from "react-firebase-hooks/storage";
-import { storage } from "../firebase.init";
+import { storage } from "../../firebase.init";
 
 
 const imgUrl = (imgName)=> {
