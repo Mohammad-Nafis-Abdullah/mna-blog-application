@@ -35,17 +35,20 @@ export default function App({ Component, pageProps }) {
 
   const handlesignOut = async()=> {
       await signOut();
+      
   }
 
   return (
     <main className={nunito.className}>
       <div className='flex justify-between lg:justify-center py-3 px-3 lg:px-5 shadow max-w-[85rem] mx-auto'>
-        <Link href='/' className='font-bold text-center text-2xl lg:text-3xl cursor-pointer hover:underline lg:grow'>Tech Blogs</Link>
+        <button onClick={()=>{
+          router.push('/');
+        }} className='font-bold text-center text-2xl lg:text-3xl cursor-pointer hover:underline lg:grow'>Tech Blogs</button>
         {
           !user?
         <button
           onClick={()=> {
-              router.push('/login','/');
+              router.push('/login');
           }}
           className='font-bold inline-flex items-center gap-1 active:scale-95 bg-green-500 rounded text-white px-3'>
           <BiLogIn />

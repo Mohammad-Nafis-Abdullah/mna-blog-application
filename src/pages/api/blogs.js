@@ -36,7 +36,28 @@ const _getData = (title='')=> {
             reject(err);
         }
     })
-} 
+}
+
+const _getDataForAuthor = (authorId='')=> {
+    
+    return new Promise(async(resolve, reject) => {
+
+        try {
+            const data_json = await fs.readFile(path,'utf-8');
+            const data_parsed = {...JSON.parse(data_json)};
+            const data_values = [...Object.values(data_parsed)];
+            if (authorId) {
+                const matched = data_values.filter((data)=> {
+                    return data.authorId===authorId;
+                })
+                resolve(matched);
+            }
+            return;
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
 
 const _addData = (data={})=> {
     const newBlog = {
@@ -126,17 +147,21 @@ const _deleteSingleData = (id='')=> {
 
 
 export default async function handler(req,res) {
-    const { id, title } = req.query;
+    const { id, title, authorId } = req.query;
     const dataBody = req.body;
 
     try {
         switch (req.method) {
-            case 'GET': // http://localhost:3000/api/blogs?id=' '&title=' '
+            case 'GET': // http://localhost:3000/api/blogs?id=' '&title=' '&authorId=' '
                 if (id) {
                     // get single blog by id from query parameter
                     const blog = await _singleData(id);
                     res.send(blog);
-                } else {
+                } else if(authorId){
+                    // get all blogs of an author
+                    const blogs = await _getDataForAuthor(authorId);
+                    res.send(blogs);
+                }else{
                     // get all blogs or matched title from query parameter
                     const blogs = await _getData(title);
                     res.send(blogs);

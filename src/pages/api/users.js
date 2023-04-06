@@ -56,20 +56,21 @@ const _addSingleUser = (user = {}) => {
 
 
 export default async function handler(req, res) {
+    const {id} = req.query;
     const userBody = req.body;
 
     try {
         switch (req.method) {
             case 'GET': // http://localhost:3000/api/users
-                const {_id} = req.cookies;
-                const resultGet = await _getSingleUser(_id);
+                // const {_id} = req.cookies;
+                const resultGet = await _getSingleUser(id);
                 res.send(resultGet);
                 return;
 
 
             case 'POST': // http://localhost:3000/api/users
                 const postResult = await _addSingleUser(userBody);
-                res.setHeader('Set-Cookie', `_id=${userBody._id}; Path=/;`);
+                // res.setHeader('Set-Cookie', `_id=${userBody._id}; Path=/;`);
                 res.send(postResult);
                 return;
 
