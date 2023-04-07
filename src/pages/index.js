@@ -12,47 +12,47 @@ import Loading from '@/components/Loading';
 import Pagination from '@/components/Pagination';
 
 
-export default function Home({blogs}) {
-  const [text,setText] = useState('');
-  const [page,setPage] = useState(1);
-  const [authorId,setAuthorId] = useState('')
+export default function Home({ blogs }) {
+  const [text, setText] = useState('');
+  const [page, setPage] = useState(1);
+  const [authorId, setAuthorId] = useState('')
   const router = useRouter();
-  const [user,loading] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
 
-  useEffect(()=> {
-      router.push({
-        pathname:'/',
-        query:{
-          title:text,
-        }
-      },'/');
-  },[text]);
+  useEffect(() => {
+    router.push({
+      pathname: '/',
+      query: {
+        title: text,
+      }
+    }, '/');
+  }, [text]);
 
-  useEffect(()=> {
-      router.push({
-        pathname:'/',
-        query:{
-          authorId:authorId
-        }
-      },'/')
-  },[authorId])
+  useEffect(() => {
+    router.push({
+      pathname: '/',
+      query: {
+        authorId: authorId
+      }
+    }, '/')
+  }, [authorId])
 
 
   if (loading) {
-    return <Loading/>;
+    return <Loading />;
   }
 
   const postPerPage = 4;
-  const countPage = (count)=> {
-      return (count%postPerPage)?Math.ceil(count/postPerPage):(count/postPerPage);
+  const countPage = (count) => {
+    return (count % postPerPage) ? Math.ceil(count / postPerPage) : (count / postPerPage);
   };
 
-  const startIndex = (page)=> {
-      return (page-1)*postPerPage;
+  const startIndex = (page) => {
+    return (page - 1) * postPerPage;
   };
 
-  const endIndex = (page)=> {
-      return (page-1)*postPerPage+postPerPage;
+  const endIndex = (page) => {
+    return (page - 1) * postPerPage + postPerPage;
   }
 
   return (
@@ -66,7 +66,7 @@ export default function Home({blogs}) {
         <div className='basis-full flex flex-col lg:flex-row lg:items-center gap-5 justify-between'>
 
           <label htmlFor="myPost" className='inline-flex gap-2 items-center pt-1 cursor-pointer order-2 self-start lg:order-none'>
-            <input onChange={(e)=>{
+            <input onChange={(e) => {
               if (e.target.checked) {
                 if (user) {
                   setAuthorId(user.uid);
@@ -82,8 +82,8 @@ export default function Home({blogs}) {
 
           <div className='inline-flex rounded overflow-hidden grow lg:max-w-sm order-1 lg:order-none'>
             <span className='font-bold tracking-wider px-2 bg-gray-900 leading-9 text-white'>Search</span>
-            <input onChange={(e)=> {
-                setText(e.target.value);
+            <input onChange={(e) => {
+              setText(e.target.value);
             }} type="text" className='min-w-0 w-full p-1.5 border-2 border-gray-600 font-bold text-gray-600' name="" />
           </div>
 
@@ -93,15 +93,15 @@ export default function Home({blogs}) {
           </Link>
         </div>
         {
-          blogs?.slice(startIndex(page),endIndex(page))?.map((blog, i) => (
+          blogs?.slice(startIndex(page), endIndex(page))?.map((blog, i) => (
             <BlogCard key={i} blog={blog} userId={user?.uid} />
           ))
         }
         <Pagination
-        className={'basis-full flex justify-center items-center p-3'}
-        page={page}
-        setPage={setPage}
-        totalPage={countPage([...blogs].length)}/>
+          className={'basis-full flex justify-center items-center p-3'}
+          page={page}
+          setPage={setPage}
+          totalPage={countPage([...blogs].length)} />
       </section>
     </>
   )
@@ -109,11 +109,11 @@ export default function Home({blogs}) {
 
 
 export async function getServerSideProps(context) {
-  const {title,authorId} = context.query;
-  const blogs = await axios.get(`http://localhost:3000/api/blogs?title=${title||''}&authorId=${authorId||''}`);
+  const { title, authorId } = context.query;
+  const blogs = await axios.get(`https://mna-blog-application.vercel.app/api/blogs?title=${title || ''}&authorId=${authorId || ''}`);
   return {
     props: {
-      blogs:blogs.data
+      blogs: blogs.data
     }
   }
 };

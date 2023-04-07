@@ -5,12 +5,12 @@ import React, { useEffect, useState } from 'react';
 import { FaLongArrowAltRight, FaRegEdit } from 'react-icons/fa';
 
 const BlogCard = ({ blog, userId }) => {
-    const [user,setUser] = useState({});
+    const [user, setUser] = useState({});
     // console.log(blog._id);
 
     useEffect(() => {
         async function getUser() {
-            const {data} = await axios.get(`http://localhost:3000/api/users?id=${userId}`);
+            const { data } = await axios.get(`https://mna-blog-application.vercel.app/api/users?id=${userId}`);
             setUser(data);
         };
         getUser();

@@ -15,7 +15,7 @@ import useRefetch from '@/hooks/useRefetch';
 
 const SinglePost = ({ blog }) => {
     const [user, loading] = useAuthState(auth);
-    const {data:comments,loading:dataLoading,refetch} = useRefetch(`http://localhost:3000/api/comments?blogId=${blog._id}`,[]);
+    const { data: comments, loading: dataLoading, refetch } = useRefetch(`https://mna-blog-application.vercel.app/api/comments?blogId=${blog._id}`, []);
     const { register, handleSubmit, reset, clearErrors, formState: { errors } } = useForm();
 
     // console.log(comments);
@@ -32,7 +32,7 @@ const SinglePost = ({ blog }) => {
             userId: user.uid,
             submitTime: Date().toLocaleString()
         }
-        const { data: { inserted } } = await axios.post(`http://localhost:3000/api/comments?blogId=${blog._id}`, newComment);
+        const { data: { inserted } } = await axios.post(`https://mna-blog-application.vercel.app/api/comments?blogId=${blog._id}`, newComment);
         if (inserted) {
             refetch();
             toast.success('Comment submitted successfully', { theme: 'colored' });
@@ -50,7 +50,7 @@ const SinglePost = ({ blog }) => {
                 <title>{blog.title} - Tech Blogs</title>
             </Head>
             <section className='flex flex-wrap gap-5 justify-center items-start max-w-6xl mx-auto px-3 pt-5 sm:pt-10 pb-5'>
-            {(loading || dataLoading) && <Loading />}
+                {(loading || dataLoading) && <Loading />}
                 <article className='basis-96 grow-[2] space-y-3'> {/* blog details element */}
                     <img
                         className='max-w-sm w-full mx-auto'
@@ -108,8 +108,8 @@ export default SinglePost;
 
 export async function getServerSideProps(context) {
     const { blogId } = context.query;
-    const blog = await axios.get(`http://localhost:3000/api/blogs?id=${blogId}`);
-    
+    const blog = await axios.get(`https://mna-blog-application.vercel.app/api/blogs?id=${blogId}`);
+
     return {
         props: {
             blog: blog.data,

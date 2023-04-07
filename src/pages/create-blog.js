@@ -18,10 +18,10 @@ const defaultImg = '1680739611531-react-blog.jpg';
 
 const CreatePost = () => {
     const [value, setValue] = useState('');
-    const [user,loading] = useAuthState(auth);
+    const [user, loading] = useAuthState(auth);
     const [img, setImg] = useState(undefined);
     const [err, setErr] = useState(false);
-    const {uploadImage} = useFirebaseFileStorage();
+    const { uploadImage } = useFirebaseFileStorage();
     const { register, handleSubmit, reset, clearErrors, formState: { errors } } = useForm();
 
     const modules = {
@@ -40,8 +40,8 @@ const CreatePost = () => {
         'link'
     ];
 
-    const errGenerator = (length)=> {
-        if (length===1) {
+    const errGenerator = (length) => {
+        if (length === 1) {
             setErr(true);
             return;
         }
@@ -50,42 +50,42 @@ const CreatePost = () => {
     }
 
     if (loading) {
-        return <Loading/>;
+        return <Loading />;
     }
 
     // form submitting function
-    const submitting = async (data)=> {
+    const submitting = async (data) => {
         // console.log(value,err);
         if (!value || err) {
             // setErr(true);
             return;
         }
         const newBlog = {
-            title:data.title,
-            details:value,
+            title: data.title,
+            details: value,
             authorId: user?.uid,
-            img:defaultImg
+            img: defaultImg
         };
 
         if (img) {
-            const {name} = await uploadImage(img);
-            newBlog.img=name;
+            const { name } = await uploadImage(img);
+            newBlog.img = name;
         }
-        const {data:{inserted}} = await axios.post('http://localhost:3000/api/blogs',newBlog);
+        const { data: { inserted } } = await axios.post('https://mna-blog-application.vercel.app/api/blogs', newBlog);
         if (inserted) {
             reset();
             setErr(false);
             setImg(undefined);
             setValue('');
             clearErrors();
-            toast.success('New blog inserted successfully',{theme:'colored'});
+            toast.success('New blog inserted successfully', { theme: 'colored' });
         } else {
-            toast.error('Blog insertion unsuccessfull',{theme:'colored'});
+            toast.error('Blog insertion unsuccessfull', { theme: 'colored' });
         }
 
     }
 
-    const getPreviewUrl = (file)=> {
+    const getPreviewUrl = (file) => {
         if (!file) {
             return '';
         }
@@ -101,17 +101,19 @@ const CreatePost = () => {
             <h2 className='font-bold text-center text-xl mt-1 underline decoration-2'>Create New Blog</h2>
 
             <form className='max-w-lg mx-auto p-3 gap-3 flex flex-col' onSubmit={handleSubmit(submitting)}>
-                
+
                 <label className='space-y-1'>
                     <span className='text-lg font-bold tracking-widest'>Blog Title : *</span>
                     <input
-                        {...register('title', { required: "Title is required", pattern:{
-                            value:/[A-Za-z]+/i,
-                            message:'Not a valid title'
-                        } })}
-                        className='border-2 p-2 text-lg w-full min-w-0 rounded text-gray-600 font-bold' type="text"/>
+                        {...register('title', {
+                            required: "Title is required", pattern: {
+                                value: /[A-Za-z]+/i,
+                                message: 'Not a valid title'
+                            }
+                        })}
+                        className='border-2 p-2 text-lg w-full min-w-0 rounded text-gray-600 font-bold' type="text" />
                     {
-                        errors.title && 
+                        errors.title &&
                         <p className='text-red-600 text-sm font-bold bg-red-200 p-2 rounded tracking-wider'>{errors.title?.message}</p>
                     }
                 </label>
@@ -119,13 +121,13 @@ const CreatePost = () => {
                 <label className='space-y-1'>
                     <span className='text-lg font-bold tracking-widest'>Blog Image : *</span>
                     <input
-                        {...register('img',{ required:false })}
+                        {...register('img', { required: false })}
                         accept=".jpg, .jpeg, .png"
                         type="file"
-                        onChange={(e)=> setImg(e.target.files?.[0])}
+                        onChange={(e) => setImg(e.target.files?.[0])}
                         className='border-2 p-2 text-lg w-full min-w-0 rounded text-gray-600 font-bold' />
                     {
-                        errors.img && 
+                        errors.img &&
                         <p className='text-red-600 text-sm font-bold bg-red-200 p-2 rounded tracking-wider'>{errors.img?.message}</p>
                     }
                     {
@@ -137,10 +139,10 @@ const CreatePost = () => {
                 <section className='w-full h-[17.5rem] space-y-1'>
                     <span className='text-lg font-bold tracking-widest'>Blog Details : *</span>
                     {
-                        err && 
+                        err &&
                         <p className='text-red-600 text-sm font-bold bg-red-200 p-2 rounded tracking-wider'>Details is required</p>
                     }
-                    <ReactQuill value={value} onChange={(content,delta,source,editor) => {
+                    <ReactQuill value={value} onChange={(content, delta, source, editor) => {
                         setValue(content);
                         errGenerator(editor.getLength());
                     }} modules={modules} formats={formats} style={{
@@ -149,10 +151,10 @@ const CreatePost = () => {
                     }} />
                 </section>
 
-                <input className='px-5 py-1 rounded-lg self-center border-2 font-bold bg-gray-900 text-white tracking-wider cursor-pointer active:scale-95 ' type="submit" value="Publish"/>
+                <input className='px-5 py-1 rounded-lg self-center border-2 font-bold bg-gray-900 text-white tracking-wider cursor-pointer active:scale-95 ' type="submit" value="Publish" />
             </form>
 
-            
+
             {/* <div dangerouslySetInnerHTML={{__html: value}}></div> */}
         </RequireAuth>
     );
