@@ -10,36 +10,31 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import auth from '../../../firebase.init';
-import { useRouter } from 'next/router';
+import useRefetch from '@/hooks/useRefetch';
 
 
-
-const SinglePost = ({ blog , comments }) => {
+const SinglePost = ({ blog }) => {
     const [user, loading] = useAuthState(auth);
-    const [_comments,_setComments] = useState(comments);
-
-    // console.log(_comments);
-
+    const {data:comments,loading:dataLoading,refetch} = useRefetch(`http://localhost:3000/api/comments?blogId=${blog._id}`,[]);
     const { register, handleSubmit, reset, clearErrors, formState: { errors } } = useForm();
 
-    if (loading) {
-        return <Loading />
-    }
+    // console.log(comments);
 
     const submitting = async (data) => {
         if (!user) {
             toast.error('Please login first to comment', { theme: 'colored' });
             return;
         }
+
         const newComment = {
             ...data,
             userEmail: user.email,
             userId: user.uid,
             submitTime: Date().toLocaleString()
         }
-        const { data: { inserted,comments } } = await axios.post(`http://localhost:3000/api/comments?blogId=${blog._id}`, newComment);
+        const { data: { inserted } } = await axios.post(`http://localhost:3000/api/comments?blogId=${blog._id}`, newComment);
         if (inserted) {
-            _setComments(comments);
+            refetch();
             toast.success('Comment submitted successfully', { theme: 'colored' });
         } else {
             toast.error('Comment submition unsuccessfull', { theme: 'colored' });
@@ -55,7 +50,7 @@ const SinglePost = ({ blog , comments }) => {
                 <title>{blog.title} - Tech Blogs</title>
             </Head>
             <section className='flex flex-wrap gap-5 justify-center items-start max-w-6xl mx-auto px-3 pt-5 sm:pt-10 pb-5'>
-
+            {(loading || dataLoading) && <Loading />}
                 <article className='basis-96 grow-[2] space-y-3'> {/* blog details element */}
                     <img
                         className='max-w-sm w-full mx-auto'
@@ -71,7 +66,7 @@ const SinglePost = ({ blog , comments }) => {
 
                     <section className='overflow-y-auto h-[23rem] space-y-2 p-1 snap-y scroll-smooth'>
                         {
-                            _comments?.map((comment) => (
+                            comments?.map((comment) => (
                                 <div key={comment.userId} className="border-2 h-[7.2rem] rounded-md snap-normal snap-start p-1 flex flex-col justify-around">
                                     <div className='inline-flex gap-2 items-center pl-3'>
                                         <img
@@ -82,7 +77,7 @@ const SinglePost = ({ blog , comments }) => {
                                             <p className='text-xs text-gray-600 overflow-y-auto'>{comment.submitTime.split('(')[0]}</p>
                                         </article>
                                     </div>
-                                    <p className='text-xs text-gray-600 h-12 overflow-y-auto pl-5 pr-3'>{comment.details}</p>
+                                    <p className='text-xs text-gray-700 h-12 overflow-y-auto pl-5 pr-3 italic font-bold text-center'> <span className='text-2xl'>&ldquo;</span> {comment.details} <span className='text-2xl'>&rdquo;</span></p>
                                 </div>
                             ))
                         }
@@ -114,12 +109,10 @@ export default SinglePost;
 export async function getServerSideProps(context) {
     const { blogId } = context.query;
     const blog = await axios.get(`http://localhost:3000/api/blogs?id=${blogId}`);
-    const comments = await axios.get(`http://localhost:3000/api/comments?blogId=${blogId}`)
-    // console.log('single blog loaded',comments.data);
+    
     return {
         props: {
             blog: blog.data,
-            comments:comments.data
         }
     }
 }
