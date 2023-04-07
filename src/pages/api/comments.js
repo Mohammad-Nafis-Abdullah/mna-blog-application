@@ -38,7 +38,6 @@ const _postSingleComment = (filename='',comment={})=> {
             resolve({
                 inserted:true,
                 insertId:comment._id,
-                comments:Object.values(comments_parsed)
             })
         } catch (err) {
             reject(err);
