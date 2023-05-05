@@ -71,7 +71,7 @@ const CreatePost = () => {
             const { name } = await uploadImage(img);
             newBlog.img = name;
         }
-        const { data: { inserted } } = await axios.post('https://mna-blog-application.vercel.app/api/blogs', newBlog);
+        const { data: { inserted } } = await axios.post('http://localhost:3000/api/blogs', newBlog);
         if (inserted) {
             reset();
             setErr(false);

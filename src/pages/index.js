@@ -110,7 +110,7 @@ export default function Home({ blogs }) {
 
 export async function getServerSideProps(context) {
   const { title, authorId } = context.query;
-  const blogs = await axios.get(`https://mna-blog-application.vercel.app/api/blogs?title=${title || ''}&authorId=${authorId || ''}`);
+  const blogs = await axios.get(`http://localhost:3000/api/blogs?title=${title || ''}&authorId=${authorId || ''}`);
   return {
     props: {
       blogs: blogs.data

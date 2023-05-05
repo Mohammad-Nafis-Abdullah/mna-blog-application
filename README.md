@@ -1,7 +1,7 @@
-# Advanced Blog Application
+# Tech Blogs
 
 
-An advance blog app where an user can read blogs and post new blogs and delete posted blogs.
+A blog app where an user can read blogs and post new blogs and delete posted blogs.
 
 ---
 

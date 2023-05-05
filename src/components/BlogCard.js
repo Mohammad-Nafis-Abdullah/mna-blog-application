@@ -10,7 +10,7 @@ const BlogCard = ({ blog, userId }) => {
 
     useEffect(() => {
         async function getUser() {
-            const { data } = await axios.get(`https://mna-blog-application.vercel.app/api/users?id=${userId}`);
+            const { data } = await axios.get(`http://localhost:3000/api/users?id=${userId}`);
             setUser(data);
         };
         getUser();

@@ -31,7 +31,7 @@ const EditBlog = () => {
     // console.log(blog);
 
     useEffect(() => {
-        axios.get(`https://mna-blog-application.vercel.app/api/blogs?id=${id}`).then(({ data }) => {
+        axios.get(`http://localhost:3000/api/blogs?id=${id}`).then(({ data }) => {
             setBlog(data);
             setInput('title', data.title);
             setValue(data.details);
@@ -84,7 +84,7 @@ const EditBlog = () => {
             const { name } = await uploadImage(img);
             newBlog.img = name;
         }
-        const { data: { update } } = await axios.put(`https://mna-blog-application.vercel.app/api/blogs?id=${blog._id}`, newBlog);
+        const { data: { update } } = await axios.put(`http://localhost:3000/api/blogs?id=${blog._id}`, newBlog);
         if (update) {
             reset();
             setErr(false);
@@ -112,7 +112,7 @@ const EditBlog = () => {
         if (!confirm) {
             return;
         }
-        const { data } = await axios.delete(`https://mna-blog-application.vercel.app/api/blogs?id=${blog._id}`);
+        const { data } = await axios.delete(`http://localhost:3000/api/blogs?id=${blog._id}`);
         if (data?.delete) {
             toast.success('Blog deleted successfully', { theme: 'colored' });
             router.push('/');

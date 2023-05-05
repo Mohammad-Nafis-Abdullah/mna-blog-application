@@ -54,7 +54,7 @@ const LoginForm = () => {
         if (result?.user?.uid) {
             clearErrors();
             reset();
-            await axios.post(`https://mna-blog-application.vercel.app/api/users`, { _id: uid, email });
+            await axios.post(`http://localhost:3000/api/users`, { _id: uid, email });
             return;
         } else {
             clearErrors();
@@ -71,7 +71,7 @@ const LoginForm = () => {
         const result = await createUserWithEmailAndPassword(data.email, data.pass);
         const { uid, email } = result?.user;
         if (result?.user?.uid) {
-            await axios.post(`https://mna-blog-application.vercel.app/api/users`, { _id: uid, email });
+            await axios.post(`http://localhost:3000/api/users`, { _id: uid, email });
             clearErrors();
             reset();
             return;
