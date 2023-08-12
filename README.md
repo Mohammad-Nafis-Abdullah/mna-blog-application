@@ -18,13 +18,13 @@ A blog app where an user can read blogs and post new blogs and delete posted blo
 Clone the project
 
 ```bash
-  git clone https://github.com/Mohammad-Nafis-Abdullah/imt-job-task.git
+  git clone https://github.com/Mohammad-Nafis-Abdullah/mna-blog-application.git
 ```
 
 Go to the project directory
 
 ```bash
-  cd imt-job-task
+  cd mna-blog-application
 ```
 
 Install dependencies
@@ -41,7 +41,7 @@ Start the application
   npm run dev
 ```
 
-After starting the application, the result is will be shown at [http://localhost:3000](http://localhost:3000).
+After starting the application, the result is will be shown at a port of [http://localhost](http://localhost).
 
 ---
 
